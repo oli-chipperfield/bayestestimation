@@ -10,7 +10,7 @@ data {
     
     real mu;                    // mean prior parameter
     real s;                     // standard deviation prior parameter
-    real lambda;                // nu prior parameter
+    real phi;                   // nu prior parameter
     
     real alpha;                 // sigma prior parameter
     real beta;                  // sigma prior parameter 
@@ -40,7 +40,7 @@ model {
     sigma_y ~ inv_gamma(alpha, beta);
     
     // exponential + 1 distribution
-    target += log(lambda) - ((nu - 1) * lambda); 
+    target += log(phi) - ((nu - 1) * phi); 
      
     // Likelihood
     
