@@ -450,3 +450,17 @@ class BayesTEstimation:
         if fig_size is not None:
             fig.update_layout(height=fig_size[1], width=fig_size[0])
         return fig
+
+        def get_rhat(self):
+            '''
+            Extracts and summarises the rhat convergence statistics for each parameter.
+            Returns
+            -------
+            pd.DataFrame:  
+                'parameters: parameter names as used in model fitting.
+                'rhat': rhat statistics for each parameter.
+            '''
+            fit_summary = self.fit.summary()
+            rhat_index = fit_summary ['summary_colnames'].index("Rhat")
+            return pd.DataFrame({'parameters': fit_summary['summary_rownames'],
+                                 'rhat': fit_summary["summary"][:, rhat_index]})
