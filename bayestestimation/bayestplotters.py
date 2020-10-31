@@ -2,7 +2,7 @@ import numpy as np
 import arviz as az
 import plotly.graph_objects as go
 
-from bayeststimation.bayesthelpers import _calculate_kde, _calculate_map
+from bayestestimation.bayesthelpers import _calculate_kde, _calculate_map
 
 
 def _get_centre_lines(draws, method):

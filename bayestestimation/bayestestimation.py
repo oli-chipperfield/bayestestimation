@@ -3,8 +3,16 @@ import pandas as pd
 import arviz as az
 import pystan as pystan
 
+from plotly.subplots import make_subplots
 from bayestestimation.model.best import model
-from bayespropestimation.bayesprophelpers import _calculate_map
+from bayestestimation.bayesthelpers import _calculate_map
+from bayestestimation.bayestplotters import _get_centre_lines
+from bayestestimation.bayestplotters import _get_intervals 
+from bayestestimation.bayestplotters import _make_density_go 
+from bayestestimation.bayestplotters import _make_histogram_go 
+from bayestestimation.bayestplotters import _make_area_go
+from bayestestimation.bayestplotters import _make_line_go
+from bayestestimation.bayestplotters import _make_delta_line
 
 class BayesTEstimation:
 
@@ -259,3 +267,156 @@ class BayesTEstimation:
         if print_inference is True:
             print(self._print_inference_probability(p, i, direction, value, names))
         return p, i
+
+    def _bayes_factor_interpretation_guide(self, bf):
+        # Interpretation guide for bayes factors using: 
+        # Jeffreys guide (https://en.wikipedia.org/wiki/Bayes_factor#cite_note-9)
+        if np.isinf(bf) or bf > np.power(10, 2):
+            i = 'decisive'
+        elif bf > np.power(10, 3/2) and bf <= np.power(10, 2):
+            i = 'very strong'
+        elif bf > 10 and bf <= np.power(10, 3/2):
+            i = 'strong'
+        elif bf > np.power(10, 1/2) and bf <= 10:
+            i = 'substantial'
+        elif bf >= 1 and bf <= np.power(10, 1/2):
+            i = 'barely worth mentioning'
+        elif bf < 1:
+            i = 'negative'
+        else:
+            raise ValueError('bf did not satisfy range of criteria')
+        return i
+
+    def _print_inference_bayes_factor(self, bf, i, direction, value, names):
+        s = 'The calculated bayes factor for the hypothesis that ' + names[1] + ' is ' + direction + ' ' + names[0]
+        if value != 0:
+            s = s + ' by more than ' + str(value)
+        s = s + ' versus the hypothesis that ' + names[0] + ' is ' + direction + ' ' + names[0]
+        if value != 0:
+            s = s + ' by more than ' + str(value)
+        s = s + ' is ' 
+        if np.isinf(bf) is True:
+            s = s + 'more than 100'
+        else:
+            s = s + ('%.5g' % bf)
+        s = s + '. Therefore the strength of evidence for this hypothesis is ' + i + '.' 
+        return s
+
+    def _estimate_bayes_factor(self, p_h1, p_h2):
+        # Estimates bayes Factor
+        if p_h2 == 0:
+            k = np.Infinity
+        else:
+            k = p_h1 / p_h2
+        return k
+
+    def infer_delta_bayes_factor(self, direction='greater than', value=0, print_inference=True, names=None):
+        '''
+        Provides a guide to making inferences on the posterior delta, based on the Bayes Factor by estimating
+        P(D|H1) / P(D|H2) for the hypotheses H1: b>(a + value) vs H2: (a + value)>b (or vice versa).  
+        Where D denotes the observed data.
+        Parameters
+        ----------
+        direction: str, defines the direction of the inference, options 'greater than' or 'less than'.  Default is 'greater than'.
+        value: float,  defines the value about which to make the inference.  Default = 0.
+        print_inference:  boolean, prints a readable string.  Default is True.
+        names:  list of length 3, parameter names in order: a, b, b-a.  Default ['theta_a', 'theta_b', 'delta']
+        Returns
+        -------
+        tuple
+            - float, bayes factor for P(D|H1) / P(D|H2) for the hypotheses H1: b>(a + value) vs H2: (a + value)>b (or vice versa).
+            - str, string interpretation of that bayes factor    
+        '''
+        dir_opts = ['greater than', 'less than']
+        if direction not in dir_opts:
+            raise ValueError("direction must be 'greater than' or 'less than'")
+        d = self.unpermuted_extract['mu_delta'].flatten() 
+        if direction == 'greater than':
+            p_h1 = len(d[d> value]) / len(d)       
+            p_h2 = 1 - p_h1
+            bf = self._estimate_bayes_factor(p_h1, p_h2)
+        else:
+            p_h1 = len(d[d < value]) / len(d)       
+            p_h2 = 1 - p_h1
+            bf = self._estimate_bayes_factor(p_h1, p_h2)
+        i = self._bayes_factor_interpretation_guide(bf)
+        if names is None:
+            names = [
+                    'mu_a',
+                    'mu_b',
+                    'mu_delta'
+                    ]
+        if len(names) > 3:
+            raise ValueError('names must be a list of length 3')
+        if print_inference is True:
+            print(self._print_inference_bayes_factor(bf, i, direction, value, names))
+        return bf, i
+
+    def posterior_plot(self, 
+                       method='hdi', 
+                       delta_line=0,
+                       col='#1f77b4', 
+                       bounds=None,
+                       names=None,
+                       fig_size=None):
+        '''
+        Plots the density of the draws from the posterior distribution
+        Parameters
+        ----------
+        method: str, defines method for interval estimate and central tendency.  Default = 'hdi'
+            - 'hdi':  Uses HDI and maximum aposteriori
+            - 'quantile': Uses credible intervals and median
+        delta_line: float, position of the vertical line on the delta plot
+        col:  str, colour of plots.  Default = '#1f77b4' (muted-blue)
+        bounds:  float or list, defines the boundaries of the interval
+            - if method = 'hdi': float, defines the interval of the HDI. Default = 0.95
+            - if method = 'quantile': list, defines the credible interval.  Default = [0.025, 0.975]
+        names: list of length 3, parameter names for the plot.  Default ['theta_a', 'theta_b', 'delta']
+        fig_size:  tuple(width, height), dimensions of plot.  Default is None
+        '''
+        valid_methods = ['hdi', 'quantile']
+        if method not in valid_methods:
+            raise ValueError("method must be 'hdi' or 'quantile'")
+        if method == 'hdi' and bounds is None:
+            bounds = 0.95
+        if method == 'quantile' and bounds is None:
+            bounds = [0.025, 0.975]
+        if method == 'hdi' and (bounds <= 0 or bounds >= 1):
+            raise ValueError("if method is 'hdi' then bounds must be a float between 0 and 1")
+        if method == 'quantiles' and len(bounds) != 2:
+            raise ValueError("quantiles must be a list of length 2")
+        if names is None:
+            names = self.par_list
+        if len(names) != 6:
+            raise ValueError('names must be a list of length 6')   
+        if method == 'hdi':
+            interval_name = 'hdi'
+            centre_line_name = 'map'
+        else: 
+            interval_name = 'credible interval'
+            centre_line_name = 'median'               
+        fig = make_subplots(rows=2,
+                            cols=3,
+                            shared_xaxes=False,
+                            shared_yaxes=False,
+                            subplot_titles=tuple(names))
+        draws = list(self._flatten_extracts().values())
+        sp_coords = np.column_stack([np.tile([1, 2, 3], 2), np.repeat([1, 2], 3)])      
+        for i in range(0, 6):
+            x = sp_coords[i][0]
+            y = sp_coords[i][1]    
+            cl = _get_centre_lines(draws[i], method=method)
+            intervals = _get_intervals(draws[i], method=method, bounds=bounds)
+            fig.add_trace(_make_density_go(draws[i], name='posterior density', col=col),  y, x)
+            fig.add_trace(_make_histogram_go(draws[i], name='posterior draws', col=col), y, x)  
+            fig.add_trace(_make_line_go(cl, name=centre_line_name, col=col), y, x)   
+            fig.add_trace(_make_area_go(intervals, name=interval_name, col=col), y, x)       
+        fig.update_layout(shapes=[_make_delta_line(self._flatten_extracts()['mu_delta'], delta_line=delta_line)])
+        fig.update_yaxes(title_text='density', row=1, col=1)
+        name_set = set()
+        fig.for_each_trace(lambda trace: 
+            trace.update(showlegend=False)
+                if (trace.name in name_set) else name_set.add(trace.name))
+        if fig_size is not None:
+            fig.update_layout(height=fig_size[1], width=fig_size[0])
+        return fig
