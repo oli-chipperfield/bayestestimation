@@ -129,6 +129,11 @@ class BayesTEstimation:
                                             iter=int(np.ceil((self.n / 4) * 2)))
         self._extract_posteriors()
 
+    def _check_for_fit(self):
+        # Checks to see if the self.fit exists
+        if 'fit' not in list(self.__dict__.keys()):
+            raise NameError('You must add data using the fit_posteriors method before using this method')
+
     def get_posteriors(self):
         '''
         Retrieves random draws from the posteriors
@@ -142,6 +147,7 @@ class BayesTEstimation:
             - sigma_b: draws from the posterior of sigma_b.
             - nu: draws from the posterior of nu.
         '''
+        self._check_for_fit()
         return self._flatten_extracts()
 
     def _calculate_quantiles(self, d, mean, quantiles):
@@ -170,6 +176,7 @@ class BayesTEstimation:
             'nu':  Summaries of the posterior of nu.
 
         '''
+        self._check_for_fit()
         if quantiles is None:
             raise ValueError("quantiles must be a list of length > 0")
         draws = list(self._flatten_extracts().values())      
@@ -215,6 +222,7 @@ class BayesTEstimation:
             'sigma_b': Summaries of the posterior of sigma_b
             'nu':  Summaries of the posterior of nu.
         '''
+        self._check_for_fit()
         if interval is None or interval <= 0 or interval >= 1:
             raise ValueError("interval must be a float > 0 and < 1")      
         draws = list(self._flatten_extracts().values())   
@@ -279,6 +287,7 @@ class BayesTEstimation:
             - float, probability that b > (a + value) or b < (a + value).
             - str, string interpretation of that probability       
         '''
+        self._check_for_fit()
         dir_opts = ['greater than', 'less than']
         if direction not in dir_opts:
             raise ValueError("direction must be 'greater than' or 'less than'")
@@ -357,6 +366,7 @@ class BayesTEstimation:
             - float, bayes factor for P(D|H1) / P(D|H2) for the hypotheses H1: b>(a + value) vs H2: (a + value)>b (or vice versa).
             - str, string interpretation of that bayes factor    
         '''
+        self._check_for_fit()
         dir_opts = ['greater than', 'less than']
         if direction not in dir_opts:
             raise ValueError("direction must be 'greater than' or 'less than'")
@@ -404,6 +414,7 @@ class BayesTEstimation:
         names: list of length 3, parameter names for the plot.  Default ['theta_a', 'theta_b', 'delta']
         fig_size:  tuple(width, height), dimensions of plot.  Default is None
         '''
+        self._check_for_fit()
         valid_methods = ['hdi', 'quantile']
         if method not in valid_methods:
             raise ValueError("method must be 'hdi' or 'quantile'")
@@ -451,16 +462,17 @@ class BayesTEstimation:
             fig.update_layout(height=fig_size[1], width=fig_size[0])
         return fig
 
-        def get_rhat(self):
-            '''
-            Extracts and summarises the rhat convergence statistics for each parameter.
-            Returns
-            -------
-            pd.DataFrame:  
-                'parameters: parameter names as used in model fitting.
-                'rhat': rhat statistics for each parameter.
-            '''
-            fit_summary = self.fit.summary()
-            rhat_index = fit_summary ['summary_colnames'].index("Rhat")
-            return pd.DataFrame({'parameters': fit_summary['summary_rownames'],
-                                 'rhat': fit_summary["summary"][:, rhat_index]})
+    def get_rhat(self):
+        '''
+        Extracts and summarises the rhat convergence statistics for each parameter.
+        Returns
+        -------
+        pd.DataFrame:  
+            'parameters: parameter names as used in model fitting.
+            'rhat': rhat statistics for each parameter.
+        '''
+        self._check_for_fit()
+        fit_summary = self.fit.summary()
+        rhat_index = fit_summary ['summary_colnames'].index("Rhat")
+        return pd.DataFrame({'parameters': fit_summary['summary_rownames'],
+                             'rhat': fit_summary["summary"][:, rhat_index]})
