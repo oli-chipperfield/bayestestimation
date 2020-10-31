@@ -37,16 +37,16 @@ class BayesTEstimation:
     def _check_sample_posterior_inputs(self):
         # Checks that parameters are in the correct format
         types = ['list', 'ndarray', 'Series']
-        mu_types = ['float', 'int']
+        mus_types = ['float', 'int']
         if ((type(self.a).__name__ not in types) or (type(self.b).__name__ not in types)):
             raise ValueError("type(a).__name__ and/or type(b).__name__ must be 'list', 'ndarray' or 'Series'")
         if self.n <= 0:
             raise ValueError("n must be a positive integer")
         if ((self.prior_alpha <= 0) or (self.prior_beta <= 0) or (self.prior_phi <= 0)):
             raise ValueError("the prior_alpha and/or prior_beta and/or prior_phi parameters must be > 0")
-        if self.prior_mu is not None and (type(self.prior_mu).__name__ not in mu_types):
+        if self.prior_mu is not None and (type(self.prior_mu).__name__ not in mus_types):
             raise ValueError("prior_mu must be None or type(prior_mu).__name__ must be 'float' or 'int'")       
-        if self.prior_s is not None and self.prior_s <= 0:
+        if self.prior_s is not None and (type(self.prior_mu).__name__ not in mus_types) and self.prior_s <= 0:
             raise ValueError("prior_s must be None or must be > 0")
         if self.seed is not None and str(self.seed).isdigit() == False:
             raise ValueError("seed must be a positive integer or None")
