@@ -41,6 +41,7 @@ def _make_density_go(draws, name, col='#000000'):
 def _make_histogram_go(draws, name, col='#000000'):
     # Makes a histogram graph object
     graphobj = go.Histogram(x=draws, 
+                            nbinsx=40,
                             opacity=0.2, 
                             histnorm='probability density',
                             marker_color=col,

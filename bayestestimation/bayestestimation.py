@@ -18,6 +18,9 @@ class BayesTEstimation:
 
 
     def __init__(self):
+        '''
+        Initialises the BayesTEstimation class and compiles the stan model
+        '''   
         self.stan_model = self._compile_model()
         par_list = ['mu_a', 
                     'mu_b', 
@@ -92,8 +95,19 @@ class BayesTEstimation:
                        prior_s=None,
                        seed=None):
         '''
-        a doc string
-        '''
+        Fits the data and prior parameters and samples from the posterior distribution.
+        Parameters
+        ----------
+        a: list, ndarray or Series, array of continuous data containing the results from sample a.
+        b: list, ndarray or Series, array of continuous data containing the results from sample b.
+        n: int, the total posterior number of posterior samples to take (after burn-in).  Default 10000.
+        prior_alpha: float > 0, the alpha parameter for the inv-gamma prior distribution of the standard deviation of a and b.  Default = 0.001.
+        prior_beta: float > 0, the beta parameter for the inv-gamma prior distribution of the standard deviation of a and b.  Default = 0.001.
+        prior_phi: float > 0, the phi parameter for the nu prior.  Default = (1/30).
+        prior_mu: float, the mean parameter for the mu priors for a and b.  Default is None.  If None the combined sample mean is used.
+        prior_s: float, the standard deviation parameter for the mu priors for a and b.  Default is None.  If None the combined standard deviation is used.
+        seed: integer > 0, set random seed at the start of sampling, default = None
+        '''   
         self.a = a
         self.b = b
         self.n_a = len(a)
@@ -117,7 +131,16 @@ class BayesTEstimation:
 
     def get_posteriors(self):
         '''
-        doc string
+        Retrieves random draws from the posteriors
+        Returns
+        -------
+        dictionary:
+            - mu_a: draws from the posterior of mu_a.
+            - mu_b: draws from the posterior of mu_b.
+            - mu_delta: draws from the posterior of mu_delta.
+            - sigma_a: draws from the posterior of sigma_a.
+            - sigma_b: draws from the posterior of sigma_b.
+            - nu: draws from the posterior of nu.
         '''
         return self._flatten_extracts()
 
@@ -135,13 +158,17 @@ class BayesTEstimation:
         ----------
         mean:  boolean, default True, calculates the mean of the draws from the posterior.  Default True
         quantiles: list, calculates the quantiles of the draws from the posterior.  Default [0.025, 0.5, 0.975]
-        names:  list of length 3, parameter names in order: a, b, b-a.  Default ['theta_a', 'theta_b', 'delta']
+        names:  list of length 6, parameter names in order: a, b, b-a.  Default ['mu_a', 'mu_b', 'mu_delta', 'sigma_a', 'sigma_b', 'nu']
         Returns
         -------
         pd.DataFrame:  
-            'theta_a':  summaries of the posterior of theta_a
-            'theta_b':  summaries of the posterior of theta_b
-            'delta':  summaries of the posterior of theta_b - theta_a
+            'mu_a':  summaries of the posterior of mu_a
+            'mu_b':  summaries of the posterior of mu_b
+            'mu_delta':  summaries of the posterior of mu_b - mu_a
+            'sigma_a': Summaries of the posterior of sigma_a
+            'sigma_b':  Summaries of the posterior of sigma_b
+            'nu':  Summaries of the posterior of nu.
+
         '''
         if quantiles is None:
             raise ValueError("quantiles must be a list of length > 0")
@@ -172,18 +199,21 @@ class BayesTEstimation:
 
     def hdi_summary(self, mean=True, interval=0.95, names=None):
         '''
-        Summarises the properties of the estimated posterior using the MAP and HDI
+        Summarises the properties of the estimated posteriors using the MAP and HDI
         Parameters
         ----------
         mean:  boolean, calculates the mean of the draws from the posterior.  Default True
         interval: float, defines the HDI interval.  Default = 0.95 (i.e. 95% HDI interval)
-        names:  list of length 3, parameter names in order: a, b, b-a.  Default ['theta_a', 'theta_b', 'delta']
+        names:  list of length 6, parameter names in order: a, b, b-a.  Default ['mu_a', 'mu_b', 'mu_delta', 'sigma_a', 'sigma_b', 'nu']
         Returns
         -------
         pd.DataFrame:  
-            'theta_a':  summaries of the posterior of theta_a
-            'theta_b':  summaries of the posterior of theta_b
-            'delta':  summaries of the posterior of theta_b - theta_a
+            'mu_a': Summaries of the posterior of mu_a
+            'mu_b': Summaries of the posterior of mu_b
+            'mu_delta': Summaries of the posterior of mu_b - mu_a
+            'sigma_a': Summaries of the posterior of sigma_a
+            'sigma_b': Summaries of the posterior of sigma_b
+            'nu':  Summaries of the posterior of nu.
         '''
         if interval is None or interval <= 0 or interval >= 1:
             raise ValueError("interval must be a float > 0 and < 1")      
@@ -247,7 +277,7 @@ class BayesTEstimation:
         -------
         tuple
             - float, probability that b > (a + value) or b < (a + value).
-            - str, string interpretation of that probabiliyu       
+            - str, string interpretation of that probability       
         '''
         dir_opts = ['greater than', 'less than']
         if direction not in dir_opts:
@@ -320,7 +350,7 @@ class BayesTEstimation:
         direction: str, defines the direction of the inference, options 'greater than' or 'less than'.  Default is 'greater than'.
         value: float,  defines the value about which to make the inference.  Default = 0.
         print_inference:  boolean, prints a readable string.  Default is True.
-        names:  list of length 3, parameter names in order: a, b, b-a.  Default ['theta_a', 'theta_b', 'delta']
+        names:  list of length 3, parameter names in order: a, b, b-a.  Default ['mu_a', 'mu_b', 'mu_delta']
         Returns
         -------
         tuple
