@@ -42,7 +42,7 @@ Class method for Bayesian estimation and comparison of means
 Features
 --------
 
-Class method that acts as a wrapper for a `pystan <https://pystan.readthedocs.io/en/latest/index.html>` formulation of a Bayesian 't-test' using the `BEST <https://pubmed.ncbi.nlm.nih.gov/22774788/>` implementation.
+Class method that acts as a wrapper for a pystan formulation of a Bayesian 't-test' using the BEST implementation.
 
 - Estimates the posterior distributions of the mean and standard deviation parameters for two samples, A and B
 
@@ -52,7 +52,7 @@ Class method that acts as a wrapper for a `pystan <https://pystan.readthedocs.io
 
 - The prior parameters, sample count, random seed, credible intervals, HDI and parameter names can all be customised.
 
-- The stan model object and stan model fit object can be accessed just like using `pystan <https://pystan.readthedocs.io/en/latest/index.html>` directly
+- The stan model object and stan model fit object can be accessed just like using pystan directly
 '''
 
 setup(
@@ -70,7 +70,7 @@ setup(
     description="Class method for Bayesian estimation and comparison of means",
     install_requires=requirements,
     license="MIT license",
-    long_description=readme + '\n\n' + history,
+    long_description=long_description,
     include_package_data=True,
     keywords='bayestestimation',
     name='bayestestimation',
