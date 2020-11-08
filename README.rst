@@ -13,7 +13,7 @@ Class method for Bayesian estimation and comparison of means
 Features
 --------
 
-* Class method that acts as a wrapper for a `pystan <https://pystan.readthedocs.io/en/latest/index.html>`_ formulation of a Bayesian 't-test' using the `BEST <https://pubmed.ncbi.nlm.nih.gov/22774788/>` implementation.
+* Class method that acts as a wrapper for a `pystan <https://pystan.readthedocs.io/en/latest/index.html>`_ formulation of a Bayesian 't-test' using the `BEST <https://pubmed.ncbi.nlm.nih.gov/22774788/>`_ implementation.
 * Estimates the posterior distributions of the mean and standard deviation parameters for two samples, A and B
 * Estimates of the posterior distribution of the difference in mean parameters for two samples, A and B.
 * Provides summary statistics and visualisations for the estimated parameters.
