@@ -4,7 +4,7 @@ import arviz as az
 import pystan as pystan
 
 from plotly.subplots import make_subplots
-from bayestestimation.model.best import model
+from bayestestimation.best import model
 from bayestestimation.bayesthelpers import _calculate_map
 from bayestestimation.bayestplotters import _get_centre_lines
 from bayestestimation.bayestplotters import _get_intervals 
