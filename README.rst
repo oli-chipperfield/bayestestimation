@@ -90,14 +90,95 @@ See (placeholder) details.
 Usage
 =====
 
-To use bayestestimation in a project::
+To use bayestestimation in a project
+
+.. code-block:: python
 
     import bayestestimation
 
 Simple example
 --------------
 
-(placeholder)
+To a carry a simple estimation of the posterior density of two samples (and their delta), import the BayesTEstimation class.
+
+.. code-block:: python
+
+    from bayestestimation.bayestestimation import BayesTEstimation
+
+Initialise the `BayesTEstimation` class.  Initialisation compiles the model in C++, you need only do this once.
+
+.. code-block:: python
+
+    ExampleBayes = BayesTEstimation()
+
+Define data from samples A and B as two lists, numpy arrays or pandas series.
+
+.. code-block:: python
+
+    import numpy as np
+
+    np.random.seed(1111)
+
+    a = np.random.normal(0, size = 20)
+    b = np.random.normal(0, size = 20)
+
+Input the data and estimate the posterior densities using the `fit_posteriors` method.
+
+.. code-block:: python
+
+    ExampleBayes.fit_posteriors(a, b)
+
+There are five methods for accessing information about the draws from simulations of the posterior densities.
+
+.. code-block:: python
+
+    ExampleBayes.get_posteriors()
+    # Returns a dictionary of arrays of samples from the posterior distributions of parameters
+
+.. code-block:: python
+
+    ExampleBayes.hdi_summary()
+    # Returns dataframe of the high-density-interval (HDI), maximum-a-posteriori (MAP) and mean of samples from the posteriors
+
+.. image:: https://github.com/oli-chipperfield/bayespropestimation/blob/master/images/example_hdi.png
+
+.. code-block:: python
+
+    ExampleBayes.quantile_summary()
+    # Returns dataframe of quantiles and mean of the posterior densities of samples for parameters
+
+.. image:: https://github.com/oli-chipperfield/bayespropestimation/blob/master/images/example_quantile.png
+
+.. code-block:: python
+
+    ExampleBayes.infer_delta_probability()
+    # Returns probability estimate of the delta parameter being greater than 0, plus an aid to inference.  
+    # Includes an optional print out of the probability and inference.
+    
+    'The probability that mu_b is greater than mu_a is 51.13%. Therefore mu_b is about equally likely greater than mu_a.'
+    '(0.5113, 'about equally likely')'
+
+.. code-block:: python
+
+    ExampleBayes.infer_delta_bayes_factor()
+    # Returns the Bayes factor of the hypothesis that P(theta_b > theta_a | D) where D is the data, plus an aid to inference.  
+    # Includes an optional print out of the Bayes factor and inference.
+
+    'The calculated bayes factor for the hypothesis that mu_b is greater than mu_a versus the hypothesis that mu_a is greater than mu_a is 1.0462. Therefore the strength of evidence for this hypothesis is barely worth mentioning.'
+    '(1.046245140167792, 'barely worth mentioning')'
+
+.. code-block:: python
+
+    ExampleBayes.posterior_plot()
+    # Returns KDE plots of samples from the posterior densities of the parameters
+
+.. image:: https://github.com/oli-chipperfield/bayespropestimation/blob/master/images/example_posterior_plot.png
+
+To see how to use non-default parameters, refer to the `usage guid <https://github.com/oli-chipperfield/bayespropestimation/blob/master/docs/bayespropestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayespropestimation/bayespropestimation/bayespropestimation.py>`_.
+
+
+
+
 
 Credits
 -------
