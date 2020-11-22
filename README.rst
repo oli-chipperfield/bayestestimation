@@ -140,14 +140,14 @@ There are five methods for accessing information about the draws from simulation
     ExampleBayes.hdi_summary()
     # Returns dataframe of the high-density-interval (HDI), maximum-a-posteriori (MAP) and mean of samples from the posteriors
 
-.. image:: https://github.com/oli-chipperfield/bayespropestimation/blob/master/images/example_hdi.png
+.. image:: https://github.com/oli-chipperfield/bayestestimation/blob/master/images/example_hdi.png
 
 .. code-block:: python
 
     ExampleBayes.quantile_summary()
     # Returns dataframe of quantiles and mean of the posterior densities of samples for parameters
 
-.. image:: https://github.com/oli-chipperfield/bayespropestimation/blob/master/images/example_quantile.png
+.. image:: https://github.com/oli-chipperfield/bayestestimation/blob/master/images/example_quantile.png
 
 .. code-block:: python
 
@@ -172,13 +172,9 @@ There are five methods for accessing information about the draws from simulation
     ExampleBayes.posterior_plot()
     # Returns KDE plots of samples from the posterior densities of the parameters
 
-.. image:: https://github.com/oli-chipperfield/bayespropestimation/blob/master/images/example_posterior_plot.png
+.. image:: https://github.com/oli-chipperfield/bayestestimation/blob/master/images/example_posterior_plot.png
 
-To see how to use non-default parameters, refer to the `usage guid <https://github.com/oli-chipperfield/bayespropestimation/blob/master/docs/bayespropestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayespropestimation/bayespropestimation/bayespropestimation.py>`_.
-
-
-
-
+To see how to use non-default parameters, refer to the `usage guid <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayespropestimation/bayespropestimation/bayespropestimation.py>`_.
 
 Credits
 -------
