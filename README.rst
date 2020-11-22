@@ -176,6 +176,18 @@ There are five methods for accessing information about the draws from simulation
 
 To see how to use non-default parameters, refer to the `usage guid <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayespropestimation/bayespropestimation/bayespropestimation.py>`_.
 
+The `BayesTEstimation` class is a wrapper for a stan model, the model object can easily accessed and interacted with using:
+
+.. code-block: python
+
+    ExampleBayes.stan_model
+
+The `fit` object can be easily accessed using:
+
+.. code-block: python
+
+    ExampleBayes.fit
+
 Credits
 -------
 
