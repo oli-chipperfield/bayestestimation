@@ -186,13 +186,13 @@ To see how to use non-default parameters, refer to the `usage guid <https://gith
 
 The `BayesTEstimation` class is a wrapper for a stan model, the model object can easily accessed and interacted with using:
 
-.. code-block: python
+.. code-block:: python
 
     ExampleBayes.stan_model
 
 The `fit` object can be easily accessed using:
 
-.. code-block: python
+.. code-block:: python
 
     ExampleBayes.fit
 
