@@ -84,7 +84,7 @@ Once you have a copy of the source, you can install it with:
 Methodology
 ===========
 
-See (placeholder) details.
+See `notebook <hhttps://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_basis.ipynb>` details.
 
 =====
 Usage
@@ -174,7 +174,15 @@ There are five methods for accessing information about the draws from simulation
 
 .. image:: https://github.com/oli-chipperfield/bayestestimation/blob/master/images/example_posterior_plot.png
 
-To see how to use non-default parameters, refer to the `usage guid <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayespropestimation/bayespropestimation/bayespropestimation.py>`_.
+To inspect convergence, the `rhat` estimates for each parameter can be retrieved using the `get_rhat` method.
+
+.. code-block:: python
+
+    ExampleBayes.get_rhat()
+
+.. image:: https://github.com/oli-chipperfield/bayestestimation/blob/master/images/example_rhat.png
+
+To see how to use non-default parameters, refer to the `usage guid <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayestestimation/bayestestimation/bayestestimation.py>`_.
 
 The `BayesTEstimation` class is a wrapper for a stan model, the model object can easily accessed and interacted with using:
 
