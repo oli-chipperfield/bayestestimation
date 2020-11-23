@@ -1,5 +1,5 @@
-import numpy as np
 import arviz as az
+import numpy as np
 import plotly.graph_objects as go
 
 from bayestestimation.bayesthelpers import _calculate_kde, _calculate_map

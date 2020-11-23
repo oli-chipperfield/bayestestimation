@@ -1,17 +1,19 @@
 #!/usr/bin/env python
-import pytest
 import numpy as np
 import pandas as pd
+import pytest
+
 from bayestestimation.bayestestimation import BayesTEstimation
-from bayestestimation.bayesthelpers import _calculate_kde
-from bayestestimation.bayesthelpers import _calculate_map
-from bayestestimation.bayestplotters import _get_centre_lines
-from bayestestimation.bayestplotters import _get_intervals
-from bayestestimation.bayestplotters import _make_density_go
-from bayestestimation.bayestplotters import _make_histogram_go
-from bayestestimation.bayestplotters import _make_area_go
-from bayestestimation.bayestplotters import _make_line_go
-from bayestestimation.bayestplotters import _make_delta_line
+from bayestestimation.bayesthelpers import _calculate_kde, _calculate_map
+from bayestestimation.bayestplotters import (
+    _get_centre_lines,
+    _get_intervals,
+    _make_area_go,
+    _make_delta_line,
+    _make_density_go,
+    _make_histogram_go,
+    _make_line_go,
+)
 
 
 def make_random_numpy(seed, size):

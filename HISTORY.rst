@@ -11,3 +11,9 @@ History
 ------------------
 
 * Second release on PyPI.
+
+0.9.2 (2020-11-23)
+------------------
+
+* Almost 'final' version
+* Fix make file

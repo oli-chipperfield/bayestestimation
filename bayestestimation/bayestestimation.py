@@ -1,18 +1,20 @@
+import arviz as az
 import numpy as np
 import pandas as pd
-import arviz as az
 import pystan as pystan
-
 from plotly.subplots import make_subplots
-from bayestestimation.best import model
+
 from bayestestimation.bayesthelpers import _calculate_map
-from bayestestimation.bayestplotters import _get_centre_lines
-from bayestestimation.bayestplotters import _get_intervals
-from bayestestimation.bayestplotters import _make_density_go
-from bayestestimation.bayestplotters import _make_histogram_go
-from bayestestimation.bayestplotters import _make_area_go
-from bayestestimation.bayestplotters import _make_line_go
-from bayestestimation.bayestplotters import _make_delta_line
+from bayestestimation.bayestplotters import (
+    _get_centre_lines,
+    _get_intervals,
+    _make_area_go,
+    _make_delta_line,
+    _make_density_go,
+    _make_histogram_go,
+    _make_line_go,
+)
+from bayestestimation.best import model
 
 
 class BayesTEstimation:
