@@ -188,7 +188,7 @@ To inspect convergence, ``rhat`` estimates for each parameter can be retrieved u
 
 .. image:: https://github.com/oli-chipperfield/bayestestimation/blob/master/images/example_rhat.png
 
-To see how to use non-default parameters, refer to the `usage guide <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayestestimation/bayestestimation/bayestestimation.py>`_.
+To see how to use non-default parameters, refer to the `usage guide <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayestestimation/blob/master/bayestestimation/bayestestimation.py>`_.
 
 The ``BayesTEstimation`` class is a wrapper for a stan model, the stan model object can easily accessed and interacted with using:
 
