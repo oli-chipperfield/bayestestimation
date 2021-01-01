@@ -6,7 +6,7 @@ Bayesian estimation of means
 .. image:: https://img.shields.io/pypi/v/bayestestimation.svg
         :target: https://pypi.python.org/pypi/bayestestimation
 
-Class method for Bayesian estimation and comparison of means
+Class method for Bayesian estimation and comparison of means.
 
 * Free software: MIT license
 
@@ -14,11 +14,11 @@ Features
 --------
 
 * Class method that acts as a wrapper for a `pystan <https://pystan.readthedocs.io/en/latest/index.html>`_ formulation of a Bayesian 't-test' using the `BEST <https://pubmed.ncbi.nlm.nih.gov/22774788/>`_ implementation.
-* Estimates the posterior distributions of the mean and standard deviation parameters for two samples, A and B
-* Estimates of the posterior distribution of the difference in mean parameters for two samples, A and B.
+* Estimates the posterior distributions of the mean and standard deviation parameters for two samples, A and B.
+* Estimates the posterior distribution of the difference in mean parameters for two samples, A and B.
 * Provides summary statistics and visualisations for the estimated parameters.
 * The prior parameters, sample count, random seed, credible intervals, HDI and parameter names can all be customised.
-* The stan model object and stan model fit object can be accessed just like using `pystan <https://pystan.readthedocs.io/en/latest/index.html>`_ directly
+* The stan model object and stan model fit object can be still accessed and edited using `pystan <https://pystan.readthedocs.io/en/latest/index.html>`_ methods directly.
 
 
 Credits
@@ -28,6 +28,12 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+
+Need to work with proportions data?
+-----------------------------------
+
+See the `bayespropestimation <https://github.com/oli-chipperfield/bayespropestimation>`_ module for a counterpart to this module.  Designed for working with proportions data.
 
 
 ============
@@ -84,7 +90,7 @@ Once you have a copy of the source, you can install it with:
 Methodology
 ===========
 
-See `notebook <hhttps://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_basis.ipynb>` details.
+See `notebook <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_basis.ipynb>`_ for details.
 
 =====
 Usage
@@ -99,13 +105,13 @@ To use bayestestimation in a project
 Simple example
 --------------
 
-To a carry a simple estimation of the posterior density of two samples (and their delta), import the BayesTEstimation class.
+To do a simple estimation of the posterior density of two samples (and their delta), import the ``BayesTEstimation`` class.
 
 .. code-block:: python
 
     from bayestestimation.bayestestimation import BayesTEstimation
 
-Initialise the `BayesTEstimation` class.  Initialisation compiles the model in C++, you need only do this once.
+Initialise the ``BayesTEstimation`` class.  Initialisation compiles the model in C++, you need only do this once.
 
 .. code-block:: python
 
@@ -122,7 +128,7 @@ Define data from samples A and B as two lists, numpy arrays or pandas series.
     a = np.random.normal(0, size = 20)
     b = np.random.normal(0, size = 20)
 
-Input the data and estimate the posterior densities using the `fit_posteriors` method.
+Input the data and estimate the posterior densities using the ``fit_posteriors`` method.
 
 .. code-block:: python
 
@@ -138,7 +144,7 @@ There are five methods for accessing information about the draws from simulation
 .. code-block:: python
 
     ExampleBayes.hdi_summary()
-    # Returns dataframe of the high-density-interval (HDI), maximum-a-posteriori (MAP) and mean of samples from the posteriors
+    # Returns a dataframe of the high-density-interval (HDI), maximum-a-posteriori (MAP) and mean of draws from the posteriors
 
 .. image:: https://github.com/oli-chipperfield/bayestestimation/blob/master/images/example_hdi.png
 
@@ -152,7 +158,7 @@ There are five methods for accessing information about the draws from simulation
 .. code-block:: python
 
     ExampleBayes.infer_delta_probability()
-    # Returns probability estimate of the delta parameter being greater than 0, plus an aid to inference.  
+    # Returns a probability estimate of the delta parameter being greater than 0, plus an aid to inference.  
     # Includes an optional print out of the probability and inference.
     
     'The probability that mu_b is greater than mu_a is 51.13%. Therefore mu_b is about equally likely greater than mu_a.'
@@ -170,11 +176,11 @@ There are five methods for accessing information about the draws from simulation
 .. code-block:: python
 
     ExampleBayes.posterior_plot()
-    # Returns KDE plots of samples from the posterior densities of the parameters
+    # Returns density plots of samples from the posterior densities of the parameters
 
 .. image:: https://github.com/oli-chipperfield/bayestestimation/blob/master/images/example_posterior_plot.png
 
-To inspect convergence, the `rhat` estimates for each parameter can be retrieved using the `get_rhat` method.
+To inspect convergence, ``rhat`` estimates for each parameter can be retrieved using the ``get_rhat`` method.
 
 .. code-block:: python
 
@@ -182,9 +188,9 @@ To inspect convergence, the `rhat` estimates for each parameter can be retrieved
 
 .. image:: https://github.com/oli-chipperfield/bayestestimation/blob/master/images/example_rhat.png
 
-To see how to use non-default parameters, refer to the `usage guid <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayestestimation/bayestestimation/bayestestimation.py>`_.
+To see how to use non-default parameters, refer to the `usage guide <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_usage.ipynb>`_ or refer to the doc-strings in the `source <https://github.com/oli-chipperfield/bayestestimation/bayestestimation/bayestestimation.py>`_.
 
-The `BayesTEstimation` class is a wrapper for a stan model, the model object can easily accessed and interacted with using:
+The ``BayesTEstimation`` class is a wrapper for a stan model, the stan model object can easily accessed and interacted with using:
 
 .. code-block:: python
 

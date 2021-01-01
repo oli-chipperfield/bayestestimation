@@ -17,3 +17,8 @@ History
 
 * Almost 'final' version
 * Fix make file
+
+0.9.2 (2021-01-01)
+------------------
+
+* Fix a variety of small typos

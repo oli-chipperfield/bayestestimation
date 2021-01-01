@@ -50,15 +50,16 @@ Features
 
 Class method that acts as a wrapper for a pystan formulation of a Bayesian 't-test' using the BEST implementation.
 
-- Estimates the posterior distributions of the mean and standard deviation parameters for two samples, A and B
+- Estimates the posterior distributions of the mean and standard deviation parameters for two samples, A and B.
 
-- Estimates of the posterior distribution of the difference in mean parameters for two samples, A and B.
+- Estimates the posterior distribution of the difference in mean parameters for two samples, A and B.
 
 - Provides summary statistics and visualisations for the estimated parameters.
 
 - The prior parameters, sample count, random seed, credible intervals, HDI and parameter names can all be customised.
 
-- The stan model object and stan model fit object can be accessed just like using pystan directly
+- The stan model object and stan model fit object can be still accessed and edited using pystan methods directly.
+
 """
 
 setup(
@@ -85,6 +86,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/oli-chipperfield/bayestestimation",
-    version="0.9.2",
+    version="0.9.3",
     zip_safe=False,
 )
