@@ -30,7 +30,7 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 
 
-Need to do working with proportions data?
+Need to work with proportions data?
 -----------------------------------------
 
 See the `bayespropestimation <https://github.com/oli-chipperfield/bayespropestimation>`_ module for a counterpart to this module.  Designed for working with proportions data.
