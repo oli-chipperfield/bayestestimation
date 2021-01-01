@@ -84,7 +84,7 @@ Once you have a copy of the source, you can install it with:
 Methodology
 ===========
 
-See `notebook <hhttps://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_basis.ipynb>`_ details.
+See `notebook <https://github.com/oli-chipperfield/bayestestimation/blob/master/docs/bayestestimation_basis.ipynb>`_ details.
 
 =====
 Usage
